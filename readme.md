@@ -28,10 +28,10 @@ Este projeto é uma aplicação ASP.NET Core que implementa autenticação basea
 2. Instale as dependências:
 
    ```sh
-   dotnet restore
+   dotnet restore WebApplication.csproj
    ```
 3. Execute a aplicação:
 
    ```sh
-   dotnet run
+   dotnet run WebApplication.csproj
    ``` 
