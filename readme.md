@@ -21,15 +21,17 @@ Este projeto é uma aplicação ASP.NET Core que implementa autenticação basea
  
 ## Instalação
 1. Clone o repositório:
+
    ```sh
-   git clone https://github.com/luizakuze/saml-csharp
-   cd WebApplication
+   git clone https://github.com/luizakuze/saml-csharp 
    ```
 2. Instale as dependências:
+
    ```sh
    dotnet restore
    ```
 3. Execute a aplicação:
+
    ```sh
    dotnet run
    ``` 
