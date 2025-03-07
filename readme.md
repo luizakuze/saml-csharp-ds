@@ -1,4 +1,4 @@
-# WebApplication - Autenticação com SAML2
+# Autenticação com SAML2 em C#
 
 
 > Projeto baseado no repositório: [Sustainsys.Saml2](https://github.com/Sustainsys/Saml2)
