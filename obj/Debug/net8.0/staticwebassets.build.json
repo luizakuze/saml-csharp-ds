@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "ovGvwoq69xNAPyMwLW/F9M5tlN/Cn/dmwJTINE2u+LI=",
-  "Source": "WebApplication",
-  "BasePath": "_content/WebApplication",
+  "Hash": "ZZ1S6RGHEAVPmjNr2eKLYxn4naVrNeEO/+bR7eR+Iqs=",
+  "Source": "saml-csharp",
+  "BasePath": "_content/saml-csharp",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

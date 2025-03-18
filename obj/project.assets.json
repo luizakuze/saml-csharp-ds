@@ -7578,9 +7578,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/lulu/gidlab/saml-csharp/WebApplication.csproj",
-      "projectName": "WebApplication",
-      "projectPath": "/home/lulu/gidlab/saml-csharp/WebApplication.csproj",
+      "projectUniqueName": "/home/lulu/gidlab/saml-csharp/saml-csharp.csproj",
+      "projectName": "saml-csharp",
+      "projectPath": "/home/lulu/gidlab/saml-csharp/saml-csharp.csproj",
       "packagesPath": "/home/lulu/.nuget/packages/",
       "outputPath": "/home/lulu/gidlab/saml-csharp/obj/",
       "projectStyle": "PackageReference",
