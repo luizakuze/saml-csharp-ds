@@ -1,23 +1,11 @@
 # Autenticação com SAML2 em C#
-
-
-> Projeto baseado no repositório: [Sustainsys.Saml2](https://github.com/Sustainsys/Saml2)
-
-
-
-Este projeto é uma aplicação ASP.NET Core que implementa autenticação baseada no protocolo SAML2 usando a biblioteca Sustainsys.Saml2. Ele permite que os usuários realizem login e logout por meio de um Provedor de Identidade (IdP). 
-## Tecnologias Utilizadas
-- .NET 8.0
+ 
+Este projeto é uma aplicação ASP.NET Core que implementa um provedor de serviço (SP) que pode se autenticar por meio do protocolo SAML2 utilizando a biblioteca Sustainsys.Saml2 em diferentes provedores de identidades (IDPs) pode meio de um Discovery Service (DS).
+ 
+## Tecnologias Utilizadas 
 - ASP.NET Core
-- Sustainsys.Saml2
-- Autenticação baseada em Cookies
-- Razor Pages
-
-## Funcionalidades
-- Suporte a login via SAML2
-- Autenticação baseada em cookies
-- Suporte a logout (Single Logout Service - SLO)
-- Implementação baseada em Razor Pages
+- Sustainsys.Saml2 
+ 
  
 ## Instalação
 1. Clone o repositório:
@@ -28,10 +16,10 @@ Este projeto é uma aplicação ASP.NET Core que implementa autenticação basea
 2. Instale as dependências:
 
    ```sh
-   dotnet restore WebApplication.csproj
+   dotnet restore saml-csharp.csproj
    ```
 3. Execute a aplicação:
 
    ```sh
-   dotnet run WebApplication.csproj
+   dotnet run saml-csharp.csproj
    ``` 
