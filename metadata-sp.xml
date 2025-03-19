@@ -1,21 +1,21 @@
 <EntityDescriptor xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata" cacheDuration="PT1H"
-    entityID="https://localhost:5001/Saml2" ID="_cbde0a40d8484a95803f098b579d24c0">
+    entityID="https://localhost:5001/Saml2" ID="_79226c975a1c4db987394a9dc83d1b7e">
     <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
         <SignedInfo>
             <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
             <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
-            <Reference URI="#_cbde0a40d8484a95803f098b579d24c0">
+            <Reference URI="#_79226c975a1c4db987394a9dc83d1b7e">
                 <Transforms>
                     <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
                     <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                 </Transforms>
                 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                <DigestValue>iUlxzvi26cWDPh2G0H2T62niMusNasRxtl/2PHEIRbE=</DigestValue>
+                <DigestValue>5KOUn2P++TtXa/BsPdJQ24hCabncETXaNrjzORONBZI=</DigestValue>
             </Reference>
         </SignedInfo>
         <SignatureValue>
-            JFBABYJCzLrANZS2EqtH93ewIMaoZf5KDvNGIySybSjcoMLc5HaSWFIlT2b8hKW5pwt6sQ0KMM31v8ahm4jNT8GkccOqKfQOSlFyjtHmjl1blqrz7p7zi/ySelSXjKr78BToRxTcJNc/5pZntQd8tD73q846uGzUb2kXuWJqmKzY398Ne88aV6ekKPDvWbobwU8DfgStU7aniGz45sw4Yn1mBnS5WGhiJXuhDMV+lxggKXkuj0mhq7IZ/gjezXAGU44ycFZAzg/POahuSC1510WC2P2kfpKee8tCC/KOs0ICnNMP9+TDJCEt0at+Mq/eQEOmwB+z9PN9x7AI304oPA==</SignatureValue>
+            PSgl4URejJR6mJ6dUlzziCGU117vWPIz2wrLmZsujH44KMNPU8HK1tejIT5lMt2e21tu8O364d1ZHS4BwOBypEK22B9Hb5IXD4qDtoi7SyXxB5ZXnDS99mOdz7yGmTs0PM1lRCe2TgLN2owpJHY/56OxuW27pw7AiVOhqUM1Mb2htMR9od92Lx9wvgJ2t/s7LC+jDgPI7nHenmXWxZR96XQamVybp0qxrJKg15r0H6+KqWm/BJ8Z59APjY6w3stkgjpuO4zl+JsJ+Yvsrbdj4+MI9e8QCvTDTmIGSyreb0sZNDbqdZlGP3g9NTrsLwM+fL5e5Bzr5HxY0BaghTW4Bg==</SignatureValue>
         <KeyInfo>
             <X509Data>
                 <X509Certificate>
@@ -45,4 +45,15 @@
         <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
             Location="https://localhost:5001/Saml2/Acs" isDefault="false" index="1" />
     </SPSSODescriptor>
+    <Organization>
+        <OrganizationName xml:lang="pt-br">GIdLab</OrganizationName>
+        <OrganizationDisplayName xml:lang="pt-br">GIdLab</OrganizationDisplayName>
+        <OrganizationURL xml:lang="pt-br">http://gidlab.rnp.br/</OrganizationURL>
+    </Organization>
+    <ContactPerson contactType="technical">
+        <Company>RNP</Company>
+        <GivenName>GIdLab</GivenName>
+        <SurName>Equipe</SurName>
+        <EmailAddress>gidlab@rnp.br</EmailAddress>
+    </ContactPerson>
 </EntityDescriptor>

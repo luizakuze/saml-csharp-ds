@@ -42,6 +42,25 @@ builder.Services.AddAuthentication(opt =>
     // Isso garante que todas as solicitações de autenticação sejam assinadas.
     opt.SPOptions.AuthenticateRequestSigningBehavior = SigningBehavior.Always; 
 
+    // Configura os metadados de contato
+    opt.SPOptions.Contacts.Add(new ContactPerson
+    {
+        Type = ContactType.Technical,
+        Company = "RNP",
+        GivenName = "GIdLab",
+        Surname = "Equipe",
+        EmailAddresses = { "gidlab@rnp.br" }
+    });
+
+    // Configura os metadados de organização
+    opt.SPOptions.Organization = new Organization
+    {
+        Names = { new LocalizedName("GIdLab", "pt-br") },
+        DisplayNames = { new LocalizedName("GIdLab", "pt-br") },
+        Urls = { new LocalizedUri(new Uri("http://gidlab.rnp.br"), "pt-br") }
+    };
+
+
 });
 
 // Adiciona suporte a Razor Pages (para renderizar páginas HTML dinâmicas no servidor).
