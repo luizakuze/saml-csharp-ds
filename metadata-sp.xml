@@ -1,21 +1,21 @@
 <EntityDescriptor xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata" cacheDuration="PT1H"
-    entityID="https://localhost:5001/Saml2" ID="_79226c975a1c4db987394a9dc83d1b7e">
+    entityID="http://sp-csharp-local:5001/Saml2" ID="_134831f0efcc43b19b5cfc7293a55a13">
     <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
         <SignedInfo>
             <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
             <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
-            <Reference URI="#_79226c975a1c4db987394a9dc83d1b7e">
+            <Reference URI="#_134831f0efcc43b19b5cfc7293a55a13">
                 <Transforms>
                     <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
                     <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                 </Transforms>
                 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                <DigestValue>5KOUn2P++TtXa/BsPdJQ24hCabncETXaNrjzORONBZI=</DigestValue>
+                <DigestValue>PS4qSq7k5wG29uxS5yxwZiG4CVVl7QvVMifnYuQbvok=</DigestValue>
             </Reference>
         </SignedInfo>
         <SignatureValue>
-            PSgl4URejJR6mJ6dUlzziCGU117vWPIz2wrLmZsujH44KMNPU8HK1tejIT5lMt2e21tu8O364d1ZHS4BwOBypEK22B9Hb5IXD4qDtoi7SyXxB5ZXnDS99mOdz7yGmTs0PM1lRCe2TgLN2owpJHY/56OxuW27pw7AiVOhqUM1Mb2htMR9od92Lx9wvgJ2t/s7LC+jDgPI7nHenmXWxZR96XQamVybp0qxrJKg15r0H6+KqWm/BJ8Z59APjY6w3stkgjpuO4zl+JsJ+Yvsrbdj4+MI9e8QCvTDTmIGSyreb0sZNDbqdZlGP3g9NTrsLwM+fL5e5Bzr5HxY0BaghTW4Bg==</SignatureValue>
+            pHO+g+/Yg0YICggfiC1NCwqok63MeSNlQ3POfaMtky+AvB0M/zhbrkSqQHHSXJSmfgm+xdqOvSmXBW7PINh9Q+NfL8OCTeItfybpnMHXrS62YcxbitGQaIb+UCUKMFp3ws5ZoUygzG20poNfC1xlYBa2hznyHptgJ1PG5KU2fH1gl8l+w7AMcF1LSJ5/LUKxcRiFSCubqbNdLUBsbndvGhwaEC4Jtpqwnk7w2rY2DG29BAzrTh6+8duGYzJCF8UOU6j4Ozh7UrGOERDaCYzBtvRXIe+YT0c1nbvnBJZT6z3pO+8cG/VFiW8UvDTTgEMJMSRJiguwTzRRd42cOWd+3A==</SignatureValue>
         <KeyInfo>
             <X509Data>
                 <X509Certificate>
@@ -28,7 +28,7 @@
         <Extensions>
             <DiscoveryResponse xmlns="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
                 Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-                Location="https://localhost:5001/Saml2/SignIn" isDefault="true" index="0" />
+                Location="http://sp-csharp-local:5001/Saml2/SignIn" isDefault="true" index="0" />
         </Extensions>
         <KeyDescriptor>
             <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
@@ -39,11 +39,11 @@
             </KeyInfo>
         </KeyDescriptor>
         <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
-            Location="https://localhost:5001/Saml2/Logout" />
+            Location="http://sp-csharp-local:5001/Saml2/Logout" />
         <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
-            Location="https://localhost:5001/Saml2/Acs" isDefault="true" index="0" />
+            Location="http://sp-csharp-local:5001/Saml2/Acs" isDefault="true" index="0" />
         <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
-            Location="https://localhost:5001/Saml2/Acs" isDefault="false" index="1" />
+            Location="http://sp-csharp-local:5001/Saml2/Acs" isDefault="false" index="1" />
     </SPSSODescriptor>
     <Organization>
         <OrganizationName xml:lang="pt-br">GIdLab</OrganizationName>

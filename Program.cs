@@ -22,21 +22,26 @@ builder.Services.AddAuthentication(opt =>
 .AddSaml2(opt =>
 {
     // Define a EntityId do Service Provider (SP), que representa a identidade do nosso sistema dentro do SAML2.
-    // Esta URL será usada para obter os metadados da aplicação SAML2.
     // A URL "https://localhost:5001/Saml2" é usada para expor os metadados do SP.
-    opt.SPOptions.EntityId = new EntityId("https://localhost:5001/Saml2");
+    // Caso seja em produção colocar HTTPS e em ./Properties/launchSettings.json
+    opt.SPOptions.EntityId = new EntityId("http://sp-csharp-local:5001/Saml2"); 
 
     // Adiciona um certificado digital para assinar mensagens de logout (padrão na doc Sustainsys.Saml2).
     // O certificado precisa ser um arquivo PFX. 
+    // TODO: Um certificado para assinatura e um para encriptação
     opt.SPOptions.ServiceCertificates.Add(new X509Certificate2("certificates/newcert.pfx", "")); // Criei também um pfx com senha "mycert.pfx", somente para teste
 
     // Define a URL do Discovery Service, que é usado para selecionar um Identity Provider (IdP) confiável.
     // O Discovery Service permite que os usuários escolham com qual provedor de identidade desejam autenticar-se.
-    // Falta a relação de confiança!!!!
+    // TODO: Relação de confiança
     opt.SPOptions.DiscoveryServiceUrl = new Uri("https://ds.cafeexpresso.rnp.br/WAYF.php"); 
  
     // Exige que asserções SAML enviadas pelo IdP sejam assinadas digitalmente para garantir sua integridade e autenticidade.
     opt.SPOptions.WantAssertionsSigned = true;
+
+    // Configuração de retorno... Configuração já está sendo feita no indes.cshtml.cs (????)
+    // TODO: Verificar se é necessário adicionar esse atributo 
+    //opt.SPOptions.ReturnUrl = new Uri("https://localhost:5001/");
 
     // Faz com que o SP assine todas as solicitações de autenticação, independentemente do que o IdP exige.
     // Isso garante que todas as solicitações de autenticação sejam assinadas.
