@@ -1,21 +1,21 @@
-<EntityDescriptor cacheDuration="PT1H" entityID="https://localhost:5001/Saml2"
-    xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion" xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
-    ID="_9575ec448a024d68814130f1b6609bbb">
+<EntityDescriptor xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns="urn:oasis:names:tc:SAML:2.0:metadata" cacheDuration="PT1H"
+    entityID="https://localhost:5001/Saml2" ID="_cbde0a40d8484a95803f098b579d24c0">
     <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
         <SignedInfo>
             <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
             <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
-            <Reference URI="#_9575ec448a024d68814130f1b6609bbb">
+            <Reference URI="#_cbde0a40d8484a95803f098b579d24c0">
                 <Transforms>
                     <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
                     <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                 </Transforms>
                 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                <DigestValue>FToAa2BP3JtQbzxCVdry46C/AEgeJxB38grFn6aT7N4=</DigestValue>
+                <DigestValue>iUlxzvi26cWDPh2G0H2T62niMusNasRxtl/2PHEIRbE=</DigestValue>
             </Reference>
         </SignedInfo>
         <SignatureValue>
-            D5lfEgyBVjzFol0hrBaqhmIGOCd29eK2ZMrIoCk3iMCKHTu8Pm+L3oUnDfDTB456uURNLlOIazIXyXZFZFnqC+sQiR0dN1hgVOnXeHf09YxAnq/3VGMF14RaoMjTGbrVrtJ0k8qrJ8tqpM/+t4FehWZiAiXpFA3QhBimjd6RGCv86wOMMNNMTh5nDfQ3d4VDnwb6CqrvWajEFOVPTGgXV6eU/+Td3IJDnygtgpMPcyaF5PD5DriWHT8Bxxc+JuMZ1Xr0tlMQNI5s09n2GALyFYnRXq/BWMlM4vKIl0o5ELNdBtABNiFxmPWn9PiUqHdZNy190r1kJraQ5kU1aRG9rg==</SignatureValue>
+            JFBABYJCzLrANZS2EqtH93ewIMaoZf5KDvNGIySybSjcoMLc5HaSWFIlT2b8hKW5pwt6sQ0KMM31v8ahm4jNT8GkccOqKfQOSlFyjtHmjl1blqrz7p7zi/ySelSXjKr78BToRxTcJNc/5pZntQd8tD73q846uGzUb2kXuWJqmKzY398Ne88aV6ekKPDvWbobwU8DfgStU7aniGz45sw4Yn1mBnS5WGhiJXuhDMV+lxggKXkuj0mhq7IZ/gjezXAGU44ycFZAzg/POahuSC1510WC2P2kfpKee8tCC/KOs0ICnNMP9+TDJCEt0at+Mq/eQEOmwB+z9PN9x7AI304oPA==</SignatureValue>
         <KeyInfo>
             <X509Data>
                 <X509Certificate>
@@ -23,12 +23,12 @@
             </X509Data>
         </KeyInfo>
     </Signature>
-    <SPSSODescriptor AuthnRequestsSigned="false" WantAssertionsSigned="false"
+    <SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true"
         protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
         <Extensions>
-            <DiscoveryResponse Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-                Location="https://localhost:5001/Saml2/SignIn" isDefault="true" index="0"
-                xmlns="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" />
+            <DiscoveryResponse xmlns="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
+                Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
+                Location="https://localhost:5001/Saml2/SignIn" isDefault="true" index="0" />
         </Extensions>
         <KeyDescriptor>
             <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">

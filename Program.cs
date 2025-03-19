@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Sustainsys.Saml2;
 using Sustainsys.Saml2.AspNetCore2;
+using Sustainsys.Saml2.Configuration;
 using Sustainsys.Saml2.Metadata;
 using System;
 using System.Security.Cryptography.X509Certificates;
@@ -25,15 +26,22 @@ builder.Services.AddAuthentication(opt =>
     // A URL "https://localhost:5001/Saml2" é usada para expor os metadados do SP.
     opt.SPOptions.EntityId = new EntityId("https://localhost:5001/Saml2");
 
-    // Adiciona um certificado digital para assinar mensagens de logout (conforme exigido pelo padrão SAML2).
+    // Adiciona um certificado digital para assinar mensagens de logout (padrão na doc Sustainsys.Saml2).
     // O certificado precisa ser um arquivo PFX. 
-    // Certificados são usados para garantir a integridade das mensagens trocadas com o Identity Provider (IdP).
     opt.SPOptions.ServiceCertificates.Add(new X509Certificate2("certificates/newcert.pfx", "")); // Criei também um pfx com senha "mycert.pfx", somente para teste
 
     // Define a URL do Discovery Service, que é usado para selecionar um Identity Provider (IdP) confiável.
     // O Discovery Service permite que os usuários escolham com qual provedor de identidade desejam autenticar-se.
     // Falta a relação de confiança!!!!
     opt.SPOptions.DiscoveryServiceUrl = new Uri("https://ds.cafeexpresso.rnp.br/WAYF.php"); 
+ 
+    // Exige que asserções SAML enviadas pelo IdP sejam assinadas digitalmente para garantir sua integridade e autenticidade.
+    opt.SPOptions.WantAssertionsSigned = true;
+
+    // Faz com que o SP assine todas as solicitações de autenticação, independentemente do que o IdP exige.
+    // Isso garante que todas as solicitações de autenticação sejam assinadas.
+    opt.SPOptions.AuthenticateRequestSigningBehavior = SigningBehavior.Always; 
+
 });
 
 // Adiciona suporte a Razor Pages (para renderizar páginas HTML dinâmicas no servidor).
