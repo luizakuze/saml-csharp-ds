@@ -20,17 +20,19 @@ public class IndexModel : PageModel
     public string? Action { get; set; }
 
     // Método que é chamado quando a página é acessada via POST
-    public IActionResult OnPost()
+public IActionResult OnPost()
+{
+    return Action switch
     {
-        // Verifica o valor da propriedade Action e executa a ação correspondente
-        return Action switch
+        "SignOut" => SignOut(CookieAuthenticationDefaults.AuthenticationScheme, Saml2Defaults.Scheme),
+
+        // Inicia corretamente o fluxo SP-Initiated com retorno definido
+        "SignIn" => Challenge(new AuthenticationProperties
         {
-            // Se Action for "SignOut", realiza o logout usando os esquemas de autenticação de cookies e SAML2
-            "SignOut" => SignOut(CookieAuthenticationDefaults.AuthenticationScheme, Saml2Defaults.Scheme),
-            // Se Action for "SignIn", inicia o processo de login
-            "SignIn" => Challenge(),
-            // Se Action tiver qualquer outro valor, lança uma exceção indicando que a ação não está implementada
-            _ => throw new NotImplementedException(),
-        };
-    }
+            RedirectUri = "/"
+        }, Saml2Defaults.Scheme),
+
+        _ => throw new NotImplementedException(),
+    };
+}
 }

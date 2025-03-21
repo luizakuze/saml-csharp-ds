@@ -1,6 +1,7 @@
 bin/ 
 obj/
 *.sln
+teste.md
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,csharp,git
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,csharp,git
