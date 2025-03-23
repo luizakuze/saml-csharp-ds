@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Sustainsys.Saml2.AspNetCore2;
 
-namespace samlcsharp.Pages;
+namespace SamlCsharp.Pages;
 
 // Ignora o token antifalsificação para esta página
 [IgnoreAntiforgeryToken]
