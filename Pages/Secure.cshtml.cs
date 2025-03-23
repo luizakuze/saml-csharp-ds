@@ -1,12 +1,12 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+// using Microsoft.AspNetCore.Authorization;
+// using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace SamlCsharp.Pages;
+// namespace SamlCsharp.Pages;
 
-[Authorize]
-public class SecureModel : PageModel
-{
-    public void OnGet()
-    {
-    }
-}
+// [Authorize]
+// public class SecureModel : PageModel
+// {
+//     public void OnGet()
+//     {
+//     }
+// }

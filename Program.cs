@@ -9,44 +9,53 @@ using System.Runtime.ConstrainedExecution;
 using System.Security.Cryptography.X509Certificates;
 
 // Cria o builder da aplicação web
-var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
-builder.Services.Configure<CookiePolicyOptions>(options =>
-{
-    options.OnAppendCookie = cookieContext =>
-        SameSite.CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-    options.OnDeleteCookie = cookieContext =>
-        SameSite.CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-
-    options.MinimumSameSitePolicy = SameSiteMode.None;
-});
+var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args); 
 // Configura os serviços de autenticação
 builder.Services.AddAuthentication(opt =>
 {
     // Define o esquema de autenticação padrão como cookies (mantém sessão do usuário).
     opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     opt.DefaultChallengeScheme = Saml2Defaults.Scheme; 
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+{
+    // // Forçar modo compatível com ambiente de testes HTTP
+    // options.Cookie.SameSite = (SameSiteMode)(-1); // Unspecified
+    // options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+
+    // // Compatibilidade extra para navegadores antigos
+    // options.Events = new CookieAuthenticationEvents
+    // {
+    //     OnSigningIn = context =>
+    //     {
+    //         context.CookieOptions.SameSite = (SameSiteMode)(-1);
+    //         context.CookieOptions.Secure = false;
+    //         return Task.CompletedTask;
+    //     }
+    // };
+})
+    .AddSaml2(opt =>
+    {
+        // Configura as opções do Provedor de Serviço (SP)
+        opt.SPOptions.EntityId = new EntityId("https://localhost:5001/Saml2");
+        // Adiciona um Provedor de Identidade (IdP)
+        opt.IdentityProviders.Add(new IdentityProvider(
+            new EntityId("https://stubidp.sustainsys.com/Metadata"), opt.SPOptions)
+        {
+            LoadMetadata = true, // Carrega os metadados do IdP
+            SingleSignOnServiceUrl = new Uri("https://stubidp.sustainsys.com"), // URL do serviço de SSO
+            Binding = Sustainsys.Saml2.WebSso.Saml2BindingType.HttpRedirect // Tipo de binding para redirecionamento HTTP
+        });
+        opt.SPOptions.EntityId = new EntityId("https://localhost:5001/Saml2"); // Define o EntityId do SP
     
 
-})
- .AddCookie() 
-
-
-.AddSaml2(opt =>
-{ 
-    // Define a EntityId do Service Provider (SP), que representa a identidade do nosso sistema dentro do SAML2.
-    // A URL "https://localhost:5001/Saml2" é usada para expor os metadados do SP.
-    // Caso seja em produção colocar HTTPS e em ./Properties/launchSettings.json
-    opt.SPOptions.EntityId = new EntityId("http://sp-csharp-local:5001/Saml2"); 
- 
     // Remove qualquer certificado previamente carregado
-    opt.SPOptions.ServiceCertificates.Clear();
+    //opt.SPOptions.ServiceCertificates.Clear();
 
     // Carrega os certificados
     // TODO: Verificar info certificado
     var encryptionCert = new X509Certificate2("certificates/newcert.pfx", ""); 
     var signingCert = new X509Certificate2("certificates/newcert.pfx", "");
-
-    opt.SPOptions.WantAssertionsSigned = true; // Exigir assinatura das asserções pelo IdP
 
     opt.SPOptions.ServiceCertificates.Add(new ServiceCertificate
     {
@@ -64,38 +73,13 @@ builder.Services.AddAuthentication(opt =>
         MetadataPublishOverride = MetadataPublishOverrideType.PublishSigning 
     });
 
-    // TESTE PARA PROVEDOR DE IDENTIDADE
-    opt.IdentityProviders.Add(
-        new IdentityProvider(
-            new EntityId("https://idp2.cafeexpresso.rnp.br/idp/shibboleth"), 
-            opt.SPOptions)
-        {
-            MetadataLocation = "https://idp2.cafeexpresso.rnp.br/idp/shibboleth",
-            LoadMetadata = true
-        });
 
-    opt.SPOptions.WantAssertionsSigned = true; // Exigir assinatura das asserções pelo IdP
-    opt.SPOptions.AuthenticateRequestSigningBehavior = SigningBehavior.Always; // SP sempre assina requisições
+    // opt.SPOptions.WantAssertionsSigned = true; // Exigir assinatura das asserções pelo IdP
+    // opt.SPOptions.AuthenticateRequestSigningBehavior = SigningBehavior.Always; // SP sempre assina requisições
 
     // Define a URL do Discovery Service, que é usado para selecionar um Identity Provider (IdP) confiável.
     // O Discovery Service permite que os usuários escolham com qual provedor de identidade desejam autenticar-se.
     //opt.SPOptions.DiscoveryServiceUrl = new Uri("https://ds.cafeexpresso.rnp.br/WAYF.php"); 
-
-    // Configuração de retorno... Configuração já está sendo feita no indes.cshtml.cs (????)
-    // TODO: Verificar se é necessário adicionar esse atributo 
-    opt.SPOptions.ReturnUrl = new Uri("https://localhost:5001/Secure");
-
-    // Faz com que o SP assine todas as solicitações de autenticação, independentemente do que o IdP exige.
-    // Isso garante que todas as solicitações de autenticação sejam assinadas.
-    opt.SPOptions.AuthenticateRequestSigningBehavior = SigningBehavior.Always; 
- 
-    // opt.SPOptions.AttributeConsumingServices.Add(new AttributeConsumingService
-    // {
-    //     ServiceNames = { new LocalizedName("SP C#", "en") },
-    //     ServiceDescriptions = new LocalizedName("Provedor de serviços C#", "en"),
-    //     InformationUrl = new LocalizedUri(new Uri("http://sp.information.url/"), "en"),
-    //     PrivacyStatementUrl = new LocalizedUri(new Uri("http://sp.privacy.url/"), "en")
-    // });
 
     // Configura os metadados de contato
     opt.SPOptions.Contacts.Add(new ContactPerson
@@ -131,55 +115,23 @@ builder.Services.AddAuthentication(opt =>
     // });
  
 });
-
-// Adiciona suporte a Razor Pages (para renderizar páginas HTML dinâmicas no servidor).
+// Adiciona suporte a Razor Pages
 builder.Services.AddRazorPages();
 
-// Adiciona suporte a controllers para permitir a utilização de endpoints API e garantir que o SAML2 funcione corretamente.
-builder.Services.AddControllers();
-
-// Constrói a aplicação, preparando-a para execução.
+// Constrói a aplicação
 var app = builder.Build();
 
-// Adiciona o middleware de autenticação para processar automaticamente requisições autenticadas.
-app.UseCookiePolicy();
-app.Use(async (context, next) =>
-{
-    await next(); // deixa o Sustainsys + autenticação processar primeiro
+// Habilita a execução do pipeline com base no caminho. Isso permite que o resto da aplicação responda tanto em / quanto em /subdir.
+app.UsePathBase("/subdir");
 
-    if (context.Request.Path == "/Saml2/Acs" && context.Response.StatusCode == 302)
-    {
-        string redirectUrl = context.Response.Headers["/"];
-        if (!string.IsNullOrEmpty(redirectUrl))
-        {
-            // Transformar o 302 em 200 com meta refresh
-            context.Response.StatusCode = 200;
-            string html = $"<html><head><meta http-equiv='refresh' content='0;url={redirectUrl}' /></head></html>";
-            await context.Response.WriteAsync(html);
-        }
-    }
-});
-
+// Habilita a autenticação
 app.UseAuthentication();
 
-// Configura o roteamento, permitindo que a aplicação direcione corretamente as requisições aos endpoints corretos.
+// Configura o roteamento
 app.UseRouting();
 
-// Adiciona a autorização, garantindo que apenas usuários autenticados possam acessar determinados recursos.
-app.UseAuthorization();
-
-// Configura os endpoints da aplicação:
-// - Razor Pages para servir páginas HTML dinâmicas.
-// - Controllers para permitir endpoints API, incluindo suporte para autenticação SAML2.
+// Mapeia as Razor Pages
 app.MapRazorPages();
-app.MapControllers();
 
-// Obtém e exibe os endpoints registrados no console para depuração.
-var routeEndpoints = app.Services.GetRequiredService<Microsoft.AspNetCore.Routing.EndpointDataSource>();
-foreach (var endpoint in routeEndpoints.Endpoints)
-{
-    Console.WriteLine(endpoint.DisplayName);
-}
-
-// Inicia a aplicação e começa a escutar requisições HTTP.
+// Executa a aplicação
 app.Run();
