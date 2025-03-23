@@ -8,20 +8,18 @@
     <title>Provedor de Serviço C#</title>
 </head>
 <body>
-    <h1>Saml2 Test Application</h1>
+    <h1>SP C#</h1>
 
     <form method="post">
         @if (User?.Identity?.IsAuthenticated ?? false)
         {
-            <p>Você está autenticado como <strong>@User.Identity.Name</strong> ✔️</p>
-            <button type="submit" name="Action" value="SignOut">Sair</button>
-            <span>🔓</span>
+            <p>Você está autenticado 🔐✅</p>
+            <button type="submit" name="Action" value="SignOut">Sair</button> 
         }
         else
         {
-            <p>Você <strong>não está autenticado ❌</strong></p>
-            <button type="submit" name="Action" value="SignIn">Entrar</button>
-            <span></span>
+            <p>Você <strong>não está autenticado 🔒❌</strong></p>
+            <button type="submit" name="Action" value="SignIn">Entrar</button> 
         }
     </form>
 </body>
