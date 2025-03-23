@@ -10,24 +10,27 @@ using System.Security.Cryptography.X509Certificates;
 
 // Cria o builder da aplicação web
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.OnAppendCookie = cookieContext =>
+        SameSite.CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
+    options.OnDeleteCookie = cookieContext =>
+        SameSite.CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
 
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
 // Configura os serviços de autenticação
 builder.Services.AddAuthentication(opt =>
 {
     // Define o esquema de autenticação padrão como cookies (mantém sessão do usuário).
     opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = Saml2Defaults.Scheme; 
+    
 
-    // Define o esquema de autenticação para desafios (quando um usuário precisa fazer login) como SAML2.
-    opt.DefaultChallengeScheme = Saml2Defaults.Scheme;
 })
-.AddCookie()
-// .AddCookie(options =>
-// {
-//     options.Cookie.Name = ".AspNetCore.SamlSession";
-//     options.Cookie.HttpOnly = true;
-//     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-//     options.Cookie.SameSite = (SameSiteMode)(-1); // Equivalent to "Unspecified"
-// })
+ .AddCookie() 
+
+
 .AddSaml2(opt =>
 { 
     // Define a EntityId do Service Provider (SP), que representa a identidade do nosso sistema dentro do SAML2.
@@ -76,12 +79,11 @@ builder.Services.AddAuthentication(opt =>
 
     // Define a URL do Discovery Service, que é usado para selecionar um Identity Provider (IdP) confiável.
     // O Discovery Service permite que os usuários escolham com qual provedor de identidade desejam autenticar-se.
-    // TODO: Relação de confiança
-    opt.SPOptions.DiscoveryServiceUrl = new Uri("https://ds.cafeexpresso.rnp.br/WAYF.php"); 
+    //opt.SPOptions.DiscoveryServiceUrl = new Uri("https://ds.cafeexpresso.rnp.br/WAYF.php"); 
 
     // Configuração de retorno... Configuração já está sendo feita no indes.cshtml.cs (????)
     // TODO: Verificar se é necessário adicionar esse atributo 
-    //opt.SPOptions.ReturnUrl = new Uri("https://localhost:5001/");
+    opt.SPOptions.ReturnUrl = new Uri("https://localhost:5001/Secure");
 
     // Faz com que o SP assine todas as solicitações de autenticação, independentemente do que o IdP exige.
     // Isso garante que todas as solicitações de autenticação sejam assinadas.
@@ -138,10 +140,26 @@ builder.Services.AddControllers();
 
 // Constrói a aplicação, preparando-a para execução.
 var app = builder.Build();
- 
 
 // Adiciona o middleware de autenticação para processar automaticamente requisições autenticadas.
 app.UseCookiePolicy();
+app.Use(async (context, next) =>
+{
+    await next(); // deixa o Sustainsys + autenticação processar primeiro
+
+    if (context.Request.Path == "/Saml2/Acs" && context.Response.StatusCode == 302)
+    {
+        string redirectUrl = context.Response.Headers["/"];
+        if (!string.IsNullOrEmpty(redirectUrl))
+        {
+            // Transformar o 302 em 200 com meta refresh
+            context.Response.StatusCode = 200;
+            string html = $"<html><head><meta http-equiv='refresh' content='0;url={redirectUrl}' /></head></html>";
+            await context.Response.WriteAsync(html);
+        }
+    }
+});
+
 app.UseAuthentication();
 
 // Configura o roteamento, permitindo que a aplicação direcione corretamente as requisições aos endpoints corretos.

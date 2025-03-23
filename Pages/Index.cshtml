@@ -1,24 +1,27 @@
 ﻿@page
 @model SamlCsharp.Pages.IndexModel
-@{
-}
 
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Saml2 Test Application</title>
+    <meta charset="utf-8" />
+    <title>Provedor de Serviço C#</title>
 </head>
 <body>
-    <h1>Saml2 Test Application</h1> 
+    <h1>Saml2 Test Application</h1>
+
     <form method="post">
-        @if (User!.Identity!.IsAuthenticated)
+        @if (User?.Identity?.IsAuthenticated ?? false)
         {
-            <button name="Action" value="SignOut">Sign Out</button> <!-- (logado) -->
+            <p>Você está autenticado como <strong>@User.Identity.Name</strong> ✔️</p>
+            <button type="submit" name="Action" value="SignOut">Sair</button>
             <span>🔓</span>
         }
         else
         {
-            <button name="Action" value="SignIn">Sign In</button> <!-- (não logado) -->
-            <span>🔒</span> 
+            <p>Você <strong>não está autenticado ❌</strong></p>
+            <button type="submit" name="Action" value="SignIn">Entrar</button>
+            <span></span>
         }
     </form>
 </body>
