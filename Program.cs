@@ -30,7 +30,7 @@ builder.Services.AddAuthentication(opt =>
         {
             LoadMetadata = true, // Carrega os metadados do IdP
             SingleSignOnServiceUrl = new Uri("https://idp2.cafeexpresso.rnp.br/idp/profile/SAML2/Redirect/SSO"), // URL de SSO
-            //SingleLogoutServiceUrl = new Uri("https://idp2.cafeexpresso.rnp.br/idp/profile/SAML2/Redirect/SLO"), // URL de SLO
+            SingleLogoutServiceUrl = new Uri("https://idp2.cafeexpresso.rnp.br/idp/profile/SAML2/Redirect/SLO"), // URL de SLO
             Binding = Sustainsys.Saml2.WebSso.Saml2BindingType.HttpRedirect // Tipo de binding para redirecionamento HTTP
         });
     
@@ -87,7 +87,11 @@ builder.Services.AddAuthentication(opt =>
   
 });
 // Adiciona suporte a Razor Pages
-builder.Services.AddRazorPages();
+//builder.Services.AddRazorPages();
+
+// Tirando o razor...
+builder.Services.AddControllersWithViews();
+
 
 // Constrói a aplicação
 var app = builder.Build();
@@ -106,7 +110,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Mapeia as Razor Pages
-app.MapRazorPages();
+//app.MapRazorPages();
+
+// Utilizando controllers e não mais o razor:
+app.MapDefaultControllerRoute();
 
 // Executa a aplicação
 app.Run();

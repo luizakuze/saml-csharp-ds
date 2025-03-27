@@ -1,11 +1,12 @@
-﻿@page
-@model SamlCsharp.Pages.IndexModel
+@{
+    ViewData["Title"] = "Provedor de Serviço C#";
+}
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Provedor de Serviço C#</title>
+    <title>@ViewData["Title"]</title>
     <style>
         body {
             display: flex;
@@ -51,22 +52,13 @@
 </head>
 <body>
     <div class="auth-container">
-    <h1>Provedor de Serviço</h1>
-    <p style="margin-top: -10px; margin-bottom: 20px; color: #666; font-size: 14px;">
-        Desenvolvido em <strong>C#</strong>
-    </p>
-    <form method="post">
-        @if (User?.Identity?.IsAuthenticated ?? false)
-        {
-            <p>Você está autenticado 🔐✅</p>
-            <button class="auth-button" type="submit" name="Action" value="SignOut">Sair</button> 
-        }
-        else
-        {
-            <p>Você não está autenticado 🔒❌</p>
-            <button class="auth-button" type="submit" name="Action" value="SignIn">Entrar</button> 
-        }
-    </form>
-</div>
+        <h1>Provedor de Serviço</h1>
+        <p style="margin-top: -10px; margin-bottom: 20px; color: #666; font-size: 14px;">
+            Desenvolvido em <strong>C#</strong>
+        </p>
+        <form method="post">
+            <button class="auth-button" type="submit" name="action" value="SignIn">Entrar</button>
+        </form>
+    </div>
 </body>
 </html>
