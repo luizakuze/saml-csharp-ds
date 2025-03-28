@@ -6,14 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Sustainsys.Saml2\Sustainsys.Saml2.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
-	  <PackageReference Include="Sustainsys.Saml2" Version="2.11.0" />
-	  <PackageReference Include="Sustainsys.Saml2.AspNetCore2" Version="2.11.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
+    <PackageReference Include="Sustainsys.Saml2" Version="2.11.0" />
+    <PackageReference Include="Sustainsys.Saml2.AspNetCore2" Version="2.11.0" />
+  </ItemGroup>
 
 </Project>

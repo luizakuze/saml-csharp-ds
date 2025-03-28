@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Sustainsys.Saml2;
 using Sustainsys.Saml2.AspNetCore2; // <- PARA .NET 6+
 using Sustainsys.Saml2.Configuration;
-using Sustainsys.Saml2.Metadata; 
+using Sustainsys.Saml2.Metadata;
 using System.Security.Cryptography.X509Certificates;
 
 internal class Program
@@ -11,6 +11,15 @@ internal class Program
     {
         // Cria o builder da aplicação web
         var builder = WebApplication.CreateBuilder(args);
+
+        // Configurações do appsettings.json
+        var config = builder.Configuration;
+        var spFqdn = config["Saml:Sp:Fqdn"];
+        var spPort = config["Saml:Sp:Port"];
+        var idpDomain = config["Saml:Idp:Fqdn"];
+        var certDir = config["Saml:Sp:CertDir"];
+
+        var spUrl = $"https://{spFqdn}:{spPort}";
 
         // Configura os serviços de autenticação
         builder.Services.AddAuthentication(opt =>
@@ -26,18 +35,18 @@ internal class Program
         })
         .AddSaml2(opt =>
             {
-                // Configura as opções do Provedor de Serviço (SP)
-                opt.SPOptions.EntityId = new EntityId("https://sp-csharp-local:5001/Saml2");
-                // Adiciona um Provedor de Identidade (IdP)
+                opt.SPOptions.EntityId = new EntityId($"{spUrl}/Saml2");
+
                 opt.IdentityProviders.Add(new IdentityProvider(
                     new EntityId("https://idp2.cafeexpresso.rnp.br/idp/shibboleth"), opt.SPOptions)
                 {
-                    LoadMetadata = true, // Carrega os metadados do IdP
-                    SingleSignOnServiceUrl = new Uri("https://idp2.cafeexpresso.rnp.br/idp/profile/SAML2/Redirect/SSO"), // URL de SSO
-                    //SingleLogoutServiceUrl = new Uri("https://idp2.cafeexpresso.rnp.br/idp/profile/SAML2/Redirect/SLO"), // URL de SLO
-                    Binding = Sustainsys.Saml2.WebSso.Saml2BindingType.HttpRedirect // Tipo de binding para redirecionamento HTTP
-
+                    LoadMetadata = true,
+                    SingleSignOnServiceUrl = new Uri("https://idp2.cafeexpresso.rnp.br/idp/profile/SAML2/Redirect/SSO"),
+                    //SingleLogoutServiceUrl = new Uri($"{idpUrl}/idp/profile/SAML2/Redirect/SLO"),
+                    Binding = Sustainsys.Saml2.WebSso.Saml2BindingType.HttpRedirect
                 });
+
+
 
                 // Configuração de certificados
                 var encryptionCert = new X509Certificate2("Certificates/newcert.pfx", "");
@@ -55,15 +64,15 @@ internal class Program
                 {
                     Certificate = signingCert,
                     Use = CertificateUse.Signing,
-                    Status = CertificateStatus.Current, 
+                    Status = CertificateStatus.Current,
                     MetadataPublishOverride = MetadataPublishOverrideType.PublishSigning
                 });
-                
+
                 opt.SPOptions.WantAssertionsSigned = true; // Exigir assinatura das asserções pelo IdP
                 opt.SPOptions.AuthenticateRequestSigningBehavior = SigningBehavior.Always; // SP sempre assina requisições
 
                 // Define a URL do Discovery Service, que é usado para selecionar um Identity Provider (IdP) confiável 
-                opt.SPOptions.DiscoveryServiceUrl = new Uri("https://ds.cafeexpresso.rnp.br/WAYF.php"); 
+                //opt.SPOptions.DiscoveryServiceUrl = new Uri("https://ds.cafeexpresso.rnp.br/WAYF.php");
 
                 // Configura os metadados de contato
                 opt.SPOptions.Contacts.Add(new ContactPerson
@@ -83,12 +92,12 @@ internal class Program
                     Urls = { new LocalizedUri(new Uri("http://gidlab.rnp.br"), "pt-br") }
                 };
 
-            }); 
+            });
 
         // Controllers + Views (MVC)
         builder.Services.AddControllersWithViews();
 
-        var app = builder.Build(); 
+        var app = builder.Build();
 
         // Configura o roteamento (controllers)
         app.UseRouting();

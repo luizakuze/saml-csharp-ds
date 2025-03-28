@@ -2,44 +2,34 @@
  
 Este projeto é uma aplicação ASP.NET Core que implementa um provedor de serviço (SP) que pode se autenticar por meio do protocolo SAML2 utilizando a biblioteca Sustainsys.Saml2 em um provedor de identidade (IDP).
  
-## Tecnologias Utilizadas 
-- ASP.NET Core
-- Sustainsys.Saml2 
- 
 ## Estrutura do Projeto
 
 ```bash
 .
-├── AttributeMaps
-│   ├── AdfsV1xMap.cs
-│   ├── AdfsV20Map.cs
-│   ├── Basic.cs
-│   ├── SamlUri.cs
-│   └── ShibbolethUri.cs 
-├── Certificates
-│   ├── mycert.crt
-│   ├── mycert.key
-│   └── newcert.pfx
-├── Controllers
-│   ├── HomeController.cs
-│   ├── LogoutController.cs
-│   └── UsersController.cs
-└── Views
-    ├── Home
-    │   └── Index.cshtml
-    ├── Logout
-    │   └── Index.cshtml
-    └── Users
-        └── Index.cshtml
-├── Properties
-│   └── launchSettings.json
-├── saml-csharp.csproj
-├── saml-csharp.sln
-├── appsettings.json
-├── Program.cs
-├── metadata-sp.xml
-└── readme.md
-
+├── AttributeMap                # Mapeamento de atributos SAML  
+│   └── SamlUri.cs              
+├── Certificates                 # Certificados para assinatura e encriptação das asserções SAML 
+│   ├── mycert.crt               # Certificado público
+│   ├── mycert.key               # Chave privada correspondente ao certificado
+│   └── newcert.pfx              # Certificado + chave combinados em formato PFX (usado pelo SP)
+├── Controllers                  # Lógica dos endpoints da aplicação
+│   ├── HomeController.cs        
+│   ├── LogoutController.cs       
+│   └── UsersController.cs        
+├── Views                        # Páginas HTML renderizadas pelos controllers
+│   ├── Home
+│   │   └── Index.cshtml         
+│   ├── Logout
+│   │   └── Index.cshtml          
+│   └── Users
+│       └── Index.cshtml         
+├── Properties                   # Configurações de ambiente para execução local (porta, perfil etc)
+│   └── launchSettings.json      
+├── appsettings.json             # Configurações da aplicação (logs, ambiente e variáveis locais)
+├── saml-csharp.csproj           # Arquivo de configuração do projeto C# (.NET)
+├── Program.cs                   # Ponto de entrada da aplicação e configuração do serviço 
+├── metadata-sp.xml              # Metadado do SP
+└── readme.md                    
 ```
 
 ## Instalação
@@ -64,3 +54,50 @@ Este projeto é uma aplicação ASP.NET Core que implementa um provedor de servi
    dotnet run saml-csharp.csproj
    ``` 
  
+
+## Preparando ambiente para novo contexto
+
+1. Gerar novos certificados para encriptação e asserções SAML.
+
+   1. Criar um diretório chamado `Certificates`:
+
+      ```bash
+      mkdir Certificates 
+      ```
+
+   2. Incluir certificados para encriptação e assinatura das asserções SAML:
+
+      ```bash
+      # Criar a chave
+      openssl genrsa -out Certificates/mykey.key 2048
+ 
+      # Criar o certificado a partir da chave
+      openssl req -new -key Certificates/mykey.key -out Certificates/mycert.csr
+      openssl x509 -req -days 365 -in Certificates/mycert.csr -signkey Certificates/mykey.key -out Certificates/mycert.crt
+
+      # Gerar o arquivo .pfx (chave + certificado)
+      openssl pkcs12 -export \
+      -out Certificates/newcert.pfx \
+      -inkey Certificates/mykey.key \
+      -in Certificates/mycert.crt \
+      -certfile Certificates/mycert.crt
+      ```
+2. Modificações para o contexto como FQDN e portas devem ser feitas no arquivo `appsettings.json`:
+      ```bash
+         {
+         "Logging": {
+            "LogLevel": {
+               "Default": "Information",
+               "Microsoft.AspNetCore": "Warning"
+            }
+         },
+         "AllowedHosts": "*",
+
+         "Saml": {
+            "Sp": {
+               "Fqdn": "sp-csharp-local", # FQDN do SP
+               "Port": "5001",            # Porta do SP
+               "CertDir": "Certificates"  # Diretório para certificados
+            } 
+         }
+      ```
