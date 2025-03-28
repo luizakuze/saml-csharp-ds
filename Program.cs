@@ -15,7 +15,7 @@ internal class Program
         // Configura os serviços de autenticação
         builder.Services.AddAuthentication(opt =>
         {
-            // Define o esquema de autenticação padrão como cookies (mantém sessão do usuário).
+            // Define o esquema de autenticação padrão como cookies (mantém sessão do usuário)
             opt.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             opt.DefaultChallengeScheme = Saml2Defaults.Scheme;
         })
@@ -39,11 +39,7 @@ internal class Program
 
                 });
 
-                // Remove qualquer certificado previamente carregado
-                //opt.SPOptions.ServiceCertificates.Clear();
-
-                // Carrega os certificados
-                // TODO: Verificar info certificado
+                // Configuração de certificados
                 var encryptionCert = new X509Certificate2("Certificates/newcert.pfx", "");
                 var signingCert = new X509Certificate2("Certificates/newcert.pfx", "");
 
@@ -59,21 +55,15 @@ internal class Program
                 {
                     Certificate = signingCert,
                     Use = CertificateUse.Signing,
-                    Status = CertificateStatus.Current, // TODO: verificar se está correto como "Future"
+                    Status = CertificateStatus.Current, 
                     MetadataPublishOverride = MetadataPublishOverrideType.PublishSigning
                 });
                 
                 opt.SPOptions.WantAssertionsSigned = true; // Exigir assinatura das asserções pelo IdP
                 opt.SPOptions.AuthenticateRequestSigningBehavior = SigningBehavior.Always; // SP sempre assina requisições
 
-
- 
-
-
-
-                // Define a URL do Discovery Service, que é usado para selecionar um Identity Provider (IdP) confiável.
-                // O Discovery Service permite que os usuários escolham com qual provedor de identidade desejam autenticar-se.
-                //opt.SPOptions.DiscoveryServiceUrl = new Uri("https://ds.cafeexpresso.rnp.br/WAYF.php"); 
+                // Define a URL do Discovery Service, que é usado para selecionar um Identity Provider (IdP) confiável 
+                opt.SPOptions.DiscoveryServiceUrl = new Uri("https://ds.cafeexpresso.rnp.br/WAYF.php"); 
 
                 // Configura os metadados de contato
                 opt.SPOptions.Contacts.Add(new ContactPerson
@@ -93,37 +83,26 @@ internal class Program
                     Urls = { new LocalizedUri(new Uri("http://gidlab.rnp.br"), "pt-br") }
                 };
 
-            });
-        // Adiciona suporte a Razor Pages
-        //builder.Services.AddRazorPages();
+            }); 
 
-        // Tirando o razor...
+        // Controllers + Views (MVC)
         builder.Services.AddControllersWithViews();
 
+        var app = builder.Build(); 
 
-        // Constrói a aplicação
-        var app = builder.Build();
-
-        // Habilita a execução do pipeline com base no caminho. Isso permite que o resto da aplicação responda tanto em / quanto em /subdir.
-        //app.UsePathBase("/subdir");
-
-        // Configura o roteamento
+        // Configura o roteamento (controllers)
         app.UseRouting();
 
+        // SameSite, Secure, etc.
         app.UseCookiePolicy();
 
-        // Habilita a autenticação
+        // Habilita middleware para autenticação e autorização
         app.UseAuthentication();
-
         app.UseAuthorization();
 
-        // Mapeia as Razor Pages
-        //app.MapRazorPages();
-
-        // Utilizando controllers e não mais o razor:
+        // Utilizando controllers
         app.MapDefaultControllerRoute();
 
-        // Executa a aplicação
         app.Run();
     }
 }

@@ -19,9 +19,11 @@ public class HomeController : Controller
         {
             "SignIn" => Challenge(new AuthenticationProperties
             {
-                RedirectUri = "/users" // <- Redireciona após login
+                RedirectUri = "/users"
             }),
             _ => throw new NotImplementedException(),
         };
     }
+
+    
 }

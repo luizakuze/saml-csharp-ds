@@ -18,13 +18,12 @@ public class UsersController : Controller
             .Where(c => SamlUriMap.From.ContainsKey(c.Type))
             .GroupBy(c => c.Type)
             .ToDictionary(g => SamlUriMap.From[g.Key], g => g.First().Value);
-
-        // Usa os nomes amigáveis (ViewData será usado na View)
+ 
         ViewData["Username"] = friendlyClaims.GetValueOrDefault("eduPersonPrincipalName");
         ViewData["Email"] = friendlyClaims.GetValueOrDefault("mail");
         ViewData["FirstName"] = friendlyClaims.GetValueOrDefault("givenName");
         ViewData["LastName"] = friendlyClaims.GetValueOrDefault("sn");
-        
+
         // Debug: imprimir todos os claims no console
         // foreach (var claim in claims)
         // {
@@ -34,6 +33,5 @@ public class UsersController : Controller
         return View(); // Views/Users/Index.cshtml
     }
 }
- 
 
- 
+
