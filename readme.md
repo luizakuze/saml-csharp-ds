@@ -22,10 +22,8 @@ Este projeto é uma aplicação ASP.NET Core que implementa um provedor de servi
 │   ├── Logout
 │   │   └── Index.cshtml          
 │   └── Users
-│       └── Index.cshtml         
-├── Properties                   # Configurações de ambiente para execução local (porta, perfil etc)
-│   └── launchSettings.json      
-├── appsettings.json             # Configurações da aplicação (logs, ambiente e variáveis locais)
+│       └── Index.cshtml        
+├── appsettings.json             # Configurações da aplicação (logs, ambiente e variáveis)
 ├── saml-csharp.csproj           # Arquivo de configuração do projeto C# (.NET)
 ├── Program.cs                   # Ponto de entrada da aplicação e configuração do serviço 
 ├── metadata-sp.xml              # Metadado do SP
