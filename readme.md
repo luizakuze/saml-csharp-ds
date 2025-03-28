@@ -18,9 +18,7 @@ Este projeto é uma aplicação ASP.NET Core que implementa um provedor de servi
 │   └── UsersController.cs        
 ├── Views                        # Páginas HTML renderizadas pelos controllers
 │   ├── Home
-│   │   └── Index.cshtml         
-│   ├── Logout
-│   │   └── Index.cshtml          
+│   │   └── Index.cshtml            
 │   └── Users
 │       └── Index.cshtml        
 ├── appsettings.json             # Configurações da aplicação (logs, ambiente e variáveis)

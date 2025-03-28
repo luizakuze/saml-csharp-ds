@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SamlCsharp.Controllers;
 
-[IgnoreAntiforgeryToken]
+[Route("[controller]")]
 public class HomeController : Controller
 {
     [HttpGet("/")]
@@ -15,15 +15,11 @@ public class HomeController : Controller
     [HttpPost("/")]
     public IActionResult Index(string? action)
     {
-        return action switch
+        return Challenge(new AuthenticationProperties
         {
-            "SignIn" => Challenge(new AuthenticationProperties
-            {
-                RedirectUri = "/users"
-            }),
-            _ => throw new NotImplementedException(),
-        };
+            RedirectUri = "/users"
+        });
     }
 
-    
+
 }

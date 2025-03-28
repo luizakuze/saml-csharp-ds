@@ -4,8 +4,9 @@ using SamlCsharp.AttributeMaps;
 
 namespace SamlCsharp.Controllers;
 
+// Garante que apenas usuários autenticados podem acessar este controller
 [Authorize]
-[IgnoreAntiforgeryToken]
+[Route("[controller]")]
 public class UsersController : Controller
 {
     [HttpGet("/users")]
