@@ -12,10 +12,13 @@ public class LogoutController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        return SignOut(
-            new AuthenticationProperties { RedirectUri = "/logout" },    
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            Saml2Defaults.Scheme
-        );
+return SignOut(
+    new AuthenticationProperties
+    {
+        RedirectUri = "/"  
+    },
+    CookieAuthenticationDefaults.AuthenticationScheme,
+    Saml2Defaults.Scheme
+);
     }
 }
