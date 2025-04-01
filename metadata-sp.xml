@@ -1,12 +1,18 @@
 <EntityDescriptor xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion"
     xmlns="urn:oasis:names:tc:SAML:2.0:metadata" cacheDuration="PT1H"
-    entityID="http://sp-csharp-local:5001/Saml2">
+    entityID="https://sp-csharp-local:5001/Saml2" ID="_002b02326e6644c5831d1806f3b90189">
     <SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true"
         protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
         <Extensions>
+
+            <mdui:UIInfo xmlns:mdui="urn:oasis:names:tc:SAML:metadata:ui">
+                <mdui:DisplayName xml:lang="en">SP C#</mdui:DisplayName>
+                <mdui:Description xml:lang="en">Provedor de serviços C#</mdui:Description> 
+            </mdui:UIInfo>
+
             <DiscoveryResponse xmlns="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
                 Binding="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol"
-                Location="http://sp-csharp-local:5001/Saml2/SignIn" isDefault="true" index="0" />
+                Location="https://sp-csharp-local:5001/Saml2/SignIn" isDefault="true" index="0" />
         </Extensions>
         <KeyDescriptor use="encryption">
             <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
@@ -24,10 +30,12 @@
                 </X509Data>
             </KeyInfo>
         </KeyDescriptor>
+        <SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+            Location="https://sp-csharp-local:5001/Saml2/Logout" />
         <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
-            Location="http://sp-csharp-local:5001/Saml2/Acs" isDefault="true" index="0" />
+            Location="https://sp-csharp-local:5001/Saml2/Acs" isDefault="true" index="0" />
         <AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
-            Location="http://sp-csharp-local:5001/Saml2/Acs" isDefault="false" index="1" />
+            Location="https://sp-csharp-local:5001/Saml2/Acs" isDefault="false" index="1" />
     </SPSSODescriptor>
     <Organization>
         <OrganizationName xml:lang="pt-br">GIdLab</OrganizationName>

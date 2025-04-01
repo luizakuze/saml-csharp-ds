@@ -1,6 +1,6 @@
 # Autenticação com SAML2 em C#
  
-Este projeto é uma aplicação ASP.NET Core que implementa um provedor de serviço (SP) que pode se autenticar por meio do protocolo SAML2 utilizando a biblioteca Sustainsys.Saml2 em um provedor de identidade (IDP).
+Esta aplicação ASP.NET Core implementa um provedor de serviço (SP) que autentica usuários via protocolo SAML2, utilizando a biblioteca Sustainsys.Saml2 e um Discovery Service (DS) para conectar-se aos provedores de identidade (IdP) da federação.
  
 ## Estrutura do Projeto
 

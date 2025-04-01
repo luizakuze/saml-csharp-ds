@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SamlCsharp.AttributeMaps;
 
 namespace SamlCsharp.Controllers;
-
-// Garante que apenas usuários autenticados podem acessar este controller
+ 
 [Authorize]
 [Route("[controller]")]
 public class UsersController : Controller
