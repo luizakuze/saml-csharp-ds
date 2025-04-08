@@ -15,6 +15,8 @@ internal class Program
         var spFqdn = config["Saml:Sp:Fqdn"];
         var spPort = config["Saml:Sp:Port"];
         var spUrl = $"https://{spFqdn}:{spPort}";
+        var encryptionCertName = config["Saml:Sp:Certificates:Encryption"];
+        var signingCertName = config["Saml:Sp:Certificates:Signing"];
 
         _ = builder.Services.AddAuthentication(opt =>
         {
@@ -35,8 +37,8 @@ internal class Program
             opt.SPOptions.ReturnUrl = new Uri($"{spUrl}/users");
             
             // ---------- Certificados ----------
-            var encryptionCert = new X509Certificate2("Certificates/newcert.pfx", "");
-            var signingCert = new X509Certificate2("Certificates/newcert.pfx", "");
+            var encryptionCert = new X509Certificate2($"Certificates/{encryptionCertName}", "");
+            var signingCert = new X509Certificate2($"Certificates/{signingCertName}", "");
 
             // Certificados para encriptação das asserções
             opt.SPOptions.ServiceCertificates.Add(new ServiceCertificate
